@@ -1,6 +1,6 @@
 import { Modal, Input, Button, message } from "antd";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const OtpModal = (props) => {
   const [otp, setOtp] = useState("");
