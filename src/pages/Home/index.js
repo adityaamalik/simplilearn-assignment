@@ -1,98 +1,86 @@
-import { useState } from "react";
-import { Tabs, Input, Button } from "antd";
-import { UserOutlined, UserAddOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Col, Row } from "antd";
+import CourseCard from "../../components/CourseCard";
+import PaymentModal from "../../components/PaymentModal";
+import OtpModal from "../../components/OtpModal";
+import PageHeading from "../../components/PageHeading";
+import LoginAndSignUp from "../../components/LoginAndSignUp";
+import Header from "../../components/Header";
 
-const { TabPane } = Tabs;
+const Courses = () => {
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [showLoginAndSignUpModal, setShowLoginAndSignUpModal] = useState(false);
 
-const Home = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const submit = (type) => {
+  useEffect(() => {
     axios
-      .post(`/users/${type}`, { email: email, password: password })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-  };
+      .get(
+        "https://s3-ap-southeast-1.amazonaws.com/he-public-data/courses26269ff.json"
+      )
+      .then((res) => {
+        console.log(res.data);
+        setCourses(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
-      <div
-        style={{
-          textAlign: "center",
-          marginTop: "200px",
-          marginBottom: "30px",
-          marginLeft: "10px",
-          marginRight: "10px",
-        }}
-      >
-        <img src="fullLogo.png" alt="simplilearn" height="90px" width="auto" />
+      <Header
+        showLoginAndSignUpModal={showLoginAndSignUpModal}
+        setShowLoginAndSignUpModal={setShowLoginAndSignUpModal}
+      />
 
-        <Tabs defaultActiveKey="1" centered>
-          <TabPane
-            tab={
-              <span>
-                <UserOutlined />
-                LOGIN
-              </span>
-            }
-            key="1"
-          >
-            <Input
-              type="email"
-              placeholder="Email"
-              size="large"
-              style={{ width: "200px" }}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <br />
-            <br />
-            <Input
-              type="password"
-              placeholder="Password"
-              size="large"
-              style={{ width: "200px" }}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <br />
-            <br />
-            <Button onClick={() => submit("login")}>LOGIN</Button>
-          </TabPane>
-          <TabPane
-            style={{ textAlign: "center" }}
-            tab={
-              <span>
-                <UserAddOutlined />
-                SIGNUP
-              </span>
-            }
-            key="2"
-          >
-            <Input
-              type="email"
-              placeholder="Email"
-              size="large"
-              style={{ width: "200px" }}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <br />
-            <br />
-            <Input
-              type="password"
-              placeholder="Password"
-              size="large"
-              style={{ width: "200px" }}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <br />
-            <br />
-            <Button onClick={() => submit("register")}>SIGN-UP</Button>
-          </TabPane>
-        </Tabs>
-      </div>
+      <PageHeading title="Courses" />
+
+      {showModal && (
+        <PaymentModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          selectedCourse={selectedCourse}
+          setSelectedCourse={setSelectedCourse}
+          setShowOtpModal={setShowOtpModal}
+        />
+      )}
+
+      {showOtpModal && (
+        <OtpModal
+          selectedCourse={selectedCourse}
+          setShowModal={setShowModal}
+          showOtpModal={showOtpModal}
+          setShowOtpModal={setShowOtpModal}
+        />
+      )}
+
+      {showLoginAndSignUpModal && (
+        <LoginAndSignUp
+          showLoginAndSignUpModal={showLoginAndSignUpModal}
+          setShowLoginAndSignUpModal={setShowLoginAndSignUpModal}
+        />
+      )}
+
+      <Row justify="center" align="middle">
+        {courses.map((course) => {
+          return (
+            <Col key={course.id} lg={8} md={12} sm={24} xs={24}>
+              <CourseCard
+                course={course}
+                setShowModal={setShowModal}
+                setSelectedCourse={setSelectedCourse}
+                showLoginAndSignUpModal={showLoginAndSignUpModal}
+                setShowLoginAndSignUpModal={setShowLoginAndSignUpModal}
+              />
+            </Col>
+          );
+        })}
+      </Row>
     </>
   );
 };
 
-export default Home;
+export default Courses;

@@ -1,6 +1,6 @@
-# Assignment For Coding Ninjas Hiring
+# Assignment For SimpliLearn Hiring
 
-This project is an outcome of an assignment given by Coding Ninjas for hiring web developers.
+This project is an outcome of an assignment given by SimpliLearn for hiring web developers.
 This is a React app which used Create-react-app for building initial template.
 
 ## Available Scripts

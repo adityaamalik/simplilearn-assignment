@@ -17,8 +17,15 @@ const CourseCard = (props) => {
         <p>Price : ₹ {props.course.price} /-</p>
         <Button
           onClick={() => {
-            props.setShowModal(true);
-            props.setSelectedCourse(props.course);
+            if (
+              localStorage.getItem("userId") !== null &&
+              localStorage.getItem("userId") !== undefined
+            ) {
+              props.setShowModal(true);
+              props.setSelectedCourse(props.course);
+            } else {
+              props.setShowLoginAndSignUpModal(true);
+            }
           }}
         >
           Buy
