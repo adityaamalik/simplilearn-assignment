@@ -7,7 +7,11 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://simplilearn-backend.herokuapp.com/";
+axios.defaults.headers.common[`Authorization`] = `Bearer ${localStorage.getItem(
+  "token"
+)}`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.baseURL = "http://localhost:3000";
 
 ReactDOM.render(
   <BrowserRouter>

@@ -15,7 +15,6 @@ const Header = (props) => {
               <S.NavLink
                 onClick={() => props.setShowLoginAndSignUpModal(true)}
                 to="/"
-                activeStyle
               >
                 Login
               </S.NavLink>
@@ -30,9 +29,10 @@ const Header = (props) => {
             </>
           ) : (
             <>
-              <S.NavLink to="/" activeStyle>
+              <S.NavLink to="/">
                 Welcome, {localStorage.getItem("userEmail")}
               </S.NavLink>
+              <S.NavLink to="/courses">My Courses</S.NavLink>
               <S.NavBtn>
                 <S.NavBtnLink onClick={() => localStorage.clear()} to="/">
                   Logout

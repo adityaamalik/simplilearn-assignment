@@ -1,5 +1,6 @@
 import { Modal, Input, Button, message } from "antd";
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 const OtpModal = (props) => {
   const [otp, setOtp] = useState("");
@@ -9,7 +10,17 @@ const OtpModal = (props) => {
       message.error("Wrong OTP");
     } else {
       message.success("Payment successful !", 1).then(() => {
-        console.log("Redirect now");
+        axios
+          .post("/orders", {
+            courses: props.selectedCourse,
+            userId: localStorage.getItem("userId"),
+          })
+          .then(() => {
+            window.location.pathname = "/courses";
+          })
+          .catch((err) => {
+            message.error("Cannot create order !");
+          });
       });
     }
   };

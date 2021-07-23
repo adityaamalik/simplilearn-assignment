@@ -70,6 +70,7 @@ const Courses = () => {
             <Col key={course.id} lg={8} md={12} sm={24} xs={24}>
               <CourseCard
                 course={course}
+                from="home"
                 setShowModal={setShowModal}
                 setSelectedCourse={setSelectedCourse}
                 showLoginAndSignUpModal={showLoginAndSignUpModal}
